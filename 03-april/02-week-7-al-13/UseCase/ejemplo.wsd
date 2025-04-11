@@ -1,0 +1,21 @@
+@startuml
+left to right direction
+actor Vendedor as v
+actor Cliente as c
+
+package Veterianria {
+  usecase "Registrar mascotas" as UC1
+  usecase "Registro de Servicios" as UC2
+  usecase "Vender de Productos" as UC3
+  usecase "Generar Factura" as UC4
+  usecase "Historia de la mascota" as UC5
+}
+v --> UC4
+v --> UC1
+v --> UC2
+v --> UC3
+c --> UC5
+
+UC1 ..> UC5: extends
+
+@enduml
