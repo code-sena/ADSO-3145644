@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente Class</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Cliente Information</h2>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" placeholder="Enter nombre">
+        
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" placeholder="Enter apellido">
+        
+        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fechaNacimiento">
+        
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" placeholder="Enter teléfono">
+        
+        <button onclick="calcularEdad()">Calcular Edad</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        class Cliente {
+            constructor(nombre, apellido, fechaNacimiento, telefono) {
+                this.nombre = nombre;
+                this.apellido = apellido;
+                this.fechaNacimiento = new Date(fechaNacimiento);
+                this.telefono = telefono;
+            }
+
+            calcularEdad() {
+                const today = new Date();
+                let age = today.getFullYear() - this.fechaNacimiento.getFullYear();
+                const monthDiff = today.getMonth() - this.fechaNacimiento.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < this.fechaNacimiento.getDate())) {
+                    age--;
+                }
+                return age;
+            }
+        }
+
+        function calcularEdad() {
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const fechaNacimiento = document.getElementById('fechaNacimiento').value;
+            const telefono = document.getElementById('telefono').value;
+
+            if (!nombre || !apellido || !fechaNacimiento || !telefono) {
+                document.getElementById('result').textContent = 'Por favor, complete todos los campos.';
+                return;
+            }
+
+            const cliente = new Cliente(nombre, apellido, fechaNacimiento, telefono);
+            const edad = cliente.calcularEdad();
+            document.getElementById('result').textContent = `Hola ${cliente.nombre} ${cliente.apellido}, tienes ${edad} años.`;
+        }
+    </script>
+</body>
+</html>

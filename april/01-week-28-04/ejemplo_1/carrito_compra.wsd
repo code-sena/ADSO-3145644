@@ -1,0 +1,56 @@
+@startuml
+class Usuario {
+    +id: int
+    +nombre: String
+    +email: String
+    +direccion: String
+}
+
+class Carrito {
+    +id: int
+    +usuarioId: int
+    +productos: List<Producto>
+}
+
+class Producto {
+    +id: int
+    +nombre: String
+    +precio: float
+    +categoriaId: int
+}
+
+class Categoria {
+    +id: int
+    +nombre: String
+}
+
+class Orden {
+    +id: int
+    +usuarioId: int
+    +carritoId: int
+    +fecha: Date
+    +total: float
+}
+
+class Pago {
+    +id: int
+    +ordenId: int
+    +metodo: String
+    +estado: String
+}
+
+class Envio {
+    +id: int
+    +ordenId: int
+    +direccion: String
+    +estado: String
+}
+
+Usuario "1" --> "1" Carrito
+Carrito "1" --> "*" Producto
+Producto "*" --> "1" Categoria
+Usuario "1" --> "*" Orden
+Orden "1" --> "1" Carrito
+Orden "1" --> "1" Pago
+Orden "1" --> "1" Envio
+@enduml

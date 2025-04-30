@@ -1,0 +1,52 @@
+@startuml
+
+class Cliente{
+    -nombre: String
+    -apellido: String
+    -fechaNacimiento: Date
+    -telefono: String
+    +CalcularEdad(): void
+}
+
+class Categoria{
+    -nombre: String
+    -descripcion: String
+}
+
+class Producto{
+    -nombre: String
+    -precio: double
+    -cantidad: int
+    -categoria: Categoria
+    +CalcularPrecioTotal(): double
+}
+
+class MedioPago{
+    -tipo: String
+    -numeroTarjeta: String
+    +ValidarPago(): boolean
+}
+
+class Factura{
+    -numeroFactura: String
+    -fecha: Date
+    -total: double
+    -cliente: Cliente
+    +GenerarFactura(): void
+}
+
+class DetalleFactura{
+    -producto: Producto
+    -cantidad: int
+    -subtotal: double
+    +CalcularSubtotal(): double
+}
+
+
+Cliente "1" -- "0..*" Factura : genera
+Factura "1" -- "0..*" DetalleFactura : contiene
+Categoria "1" -- "0..*" Producto : clasifica
+Producto "1" -- "0..*" DetalleFactura : incluye
+MedioPago "1" -- "0..*" Factura : paga
+
+@enduml
