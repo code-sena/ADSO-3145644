@@ -1,0 +1,28 @@
+@startuml
+left to right direction
+actor Persona as p
+
+package Personas {
+  actor Admin as a
+  actor Client as c
+}
+package "Cajero  Automatico" {
+    usecase "Retirar Plata" as UC1
+    usecase "Ingresar contraseña" as UC2
+    usecase "Cargar Dinero" as UC3
+    usecase "Recibir autorizacion para cargar dinero" as UC4
+    usecase "Recibir autorizacion para retirar dinero" as UC5
+    usecase "Actualizar flujo de caja" as UC6
+
+}
+c --> UC2
+UC2 .> UC5 : extends
+UC5 <. UC1 : include
+UC6 <. UC1 : include
+UC3 .> UC6 : include 
+
+a --> UC4
+UC4 .> UC3 : include
+
+p -- c : "Actor"
+@enduml
