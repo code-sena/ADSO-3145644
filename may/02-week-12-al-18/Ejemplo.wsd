@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+
+actor Administrador as A
+actor Usuario as U
+
+package "Gestion" {
+    usecase "Administrar usuarios" as UC4
+}
+
+package "Calendario" {
+    usecase "Gestionar la CRUD de usuarios" as UC1    
+    usecase "Gestionar la CRUD de categorías" as UC2
+    usecase "Gestionar la CRUD de actividades" as UC3
+}
+
+package "Validacion" {
+    usecase "Validar datos" as UC5
+}
+
+
+Calendario *-- Validacion
+Gestion --o Calendario
+
+A -- UC4
+U -- UC1
+
+UC1 .> UC2 : «extend»
+UC3 .> UC2 : «include»
+UC1 .> UC3 : «extend»
+
+@enduml
