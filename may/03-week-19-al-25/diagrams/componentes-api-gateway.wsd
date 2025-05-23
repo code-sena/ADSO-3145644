@@ -1,0 +1,83 @@
+@startuml Componentes Sistema de Ventas - API Gateway
+
+!define RECTANGLE class
+
+package "API Gateway" {
+    [Gateway Controller] as gateway
+    [Rate Limiter] as rateLimiter
+    [Load Balancer] as loadBalancer
+    [Circuit Breaker] as circuitBreaker
+    [Service Discovery] as serviceDiscovery
+    [Authentication] as auth
+    [Request/Response Transformer] as transformer
+}
+
+package "Servicios" {
+    [Servicio de Autenticación] as authService
+    [Servicio de Productos] as productService
+    [Servicio de Carrito] as cartService
+    [Servicio de Ventas] as saleService
+}
+
+package "Cliente" {
+    [Web Browser] as browser
+    [Mobile App] as mobile
+    [Third Party] as thirdParty
+}
+
+database "Redis" {
+    [Cache] as cache
+    [Session Store] as session
+}
+
+' Conexiones Cliente
+browser --> gateway : HTTP/HTTPS
+mobile --> gateway : HTTP/HTTPS
+thirdParty --> gateway : API Key
+
+' Conexiones Gateway
+gateway --> rateLimiter : Aplica límites
+gateway --> loadBalancer : Distribuye carga
+gateway --> circuitBreaker : Protege servicios
+gateway --> serviceDiscovery : Encuentra servicios
+gateway --> auth : Valida
+gateway --> transformer : Transforma
+
+' Conexiones Servicios
+loadBalancer --> authService : Ruta
+loadBalancer --> productService : Ruta
+loadBalancer --> cartService : Ruta
+loadBalancer --> saleService : Ruta
+
+' Conexiones Cache
+gateway --> cache : Consulta
+auth --> session : Almacena
+
+note right of gateway
+  Patrón Singleton
+  - Instancia única
+  - Punto de entrada centralizado
+end note
+
+note right of rateLimiter
+  Control de Tráfico
+  - Límites por IP
+  - Límites por usuario
+  - Límites por servicio
+end note
+
+note right of circuitBreaker
+  Protección
+  - Fallback
+  - Timeout
+  - Retry
+end note
+
+note right of serviceDiscovery
+  Registro
+  - Health Check
+  - Auto-scaling
+  - Load Balancing
+end note
+
+@enduml 

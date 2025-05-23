@@ -1,0 +1,82 @@
+@startuml Componentes Sistema de Ventas - Eventos
+
+!define RECTANGLE class
+
+package "Event Bus" {
+    [Event Publisher] as publisher
+    [Event Subscriber] as subscriber
+    [Message Queue] as queue
+    [Event Handler] as handler
+}
+
+package "Servicios" {
+    [Servicio de Carrito] as cartService
+    [Servicio de Ventas] as saleService
+    [Servicio de Notificaciones] as notificationService
+    [Servicio de Inventario] as inventoryService
+}
+
+package "Eventos" {
+    [CarritoCreado] as cartCreated
+    [ProductoAgregado] as productAdded
+    [VentaRealizada] as saleCompleted
+    [StockActualizado] as stockUpdated
+}
+
+database "MySQL" {
+    [carritos] as carritos
+    [ventas] as ventas
+    [productos] as productos
+    [notificaciones] as notificaciones
+}
+
+' Conexiones Event Bus
+publisher --> queue : Publica
+queue --> subscriber : Consume
+subscriber --> handler : Procesa
+
+' Conexiones Servicios
+cartService --> publisher : Emite
+saleService --> publisher : Emite
+notificationService --> publisher : Emite
+inventoryService --> publisher : Emite
+
+' Conexiones Eventos
+cartCreated --> handler : Procesa
+productAdded --> handler : Procesa
+saleCompleted --> handler : Procesa
+stockUpdated --> handler : Procesa
+
+' Conexiones Base de Datos
+handler --> carritos : Actualiza
+handler --> ventas : Registra
+handler --> productos : Modifica
+handler --> notificaciones : Crea
+
+note right of publisher
+  Patrón Publisher/Subscriber
+  - Publica eventos
+  - Desacopla servicios
+end note
+
+note right of handler
+  Patrón Observer
+  - Procesa eventos
+  - Actualiza estado
+end note
+
+note right of cartCreated
+  Evento
+  - id_carrito
+  - usuario_id
+  - fecha
+end note
+
+note right of saleCompleted
+  Evento
+  - id_venta
+  - total
+  - productos
+end note
+
+@enduml 

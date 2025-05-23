@@ -1,0 +1,78 @@
+@startuml Componentes Sistema de Ventas
+
+!define RECTANGLE class
+
+package "Sistema de Gestión de Ventas" {
+    [Frontend] as frontend
+    [Backend API] as backend
+    [Servicios] as servicios
+    
+    database "MySQL" {
+        package "Seguridad" {
+            [roles] as roles #lightblue
+            [usuarios] as usuarios #lightblue
+        }
+        
+        package "Ventas" {
+            [facturas] as facturas #lightgreen
+            [factura_detalles] as facturaDetalles #lightgreen
+            [productos] as productos #lightgreen
+            [clientes] as clientes #lightgreen
+        }
+        
+        package "Carrito" {
+            [carritos] as carritos #lightyellow
+            [carrito_detalles] as carritoDetalles #lightyellow
+        }
+    }
+}
+
+frontend --> backend : HTTP/HTTPS
+backend --> servicios : Llamadas internas
+servicios --> roles : CRUD
+servicios --> usuarios : CRUD
+servicios --> facturas : CRUD
+servicios --> facturaDetalles : CRUD
+servicios --> productos : CRUD
+servicios --> clientes : CRUD
+servicios --> carritos : CRUD
+servicios --> carritoDetalles : CRUD
+
+note right of roles
+  - id
+  - nombre
+  - descripcion
+end note
+
+note right of usuarios
+  - id
+  - nombre
+  - email
+  - password
+  - rol_id
+end note
+
+note right of productos
+  - id
+  - nombre
+  - precio
+  - stock
+  - categoria
+end note
+
+note right of carritos
+  - id
+  - usuario_id
+  - fecha_creacion
+  - estado
+end note
+
+note right of facturas
+  - id
+  - cliente_id
+  - fecha
+  - total
+  - estado
+end note
+
+@enduml 

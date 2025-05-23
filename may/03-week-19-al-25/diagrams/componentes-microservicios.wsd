@@ -1,0 +1,137 @@
+@startuml Componentes Sistema de Ventas - Microservicios
+
+!define RECTANGLE class
+
+package "API Gateway" {
+    [Gateway Controller] as gateway
+    [Rate Limiter] as rateLimiter
+    [Load Balancer] as loadBalancer
+}
+
+package "Servicio de Autenticación" {
+    [Auth Controller] as authController
+    [Auth Service] as authService
+    [JWT Handler] as jwtHandler
+    [User Repository] as userRepo
+}
+
+package "Servicio de Productos" {
+    [Product Controller] as productController
+    [Product Service] as productService
+    [Product Repository] as productRepo
+    [Product Factory] as productFactory
+}
+
+package "Servicio de Carrito" {
+    [Cart Controller] as cartController
+    [Cart Service] as cartService
+    [Cart Repository] as cartRepo
+    [Cart Factory] as cartFactory
+}
+
+package "Servicio de Ventas" {
+    [Sale Controller] as saleController
+    [Sale Service] as saleService
+    [Sale Repository] as saleRepo
+    [Sale Factory] as saleFactory
+}
+
+package "Event Bus" {
+    [Event Publisher] as eventPublisher
+    [Event Subscriber] as eventSubscriber
+    [Message Queue] as messageQueue
+}
+
+database "MySQL" {
+    package "Seguridad" {
+        [roles] as roles #lightblue
+        [usuarios] as usuarios #lightblue
+    }
+    
+    package "Productos" {
+        [productos] as productos #lightgreen
+        [categorias] as categorias #lightgreen
+    }
+    
+    package "Carrito" {
+        [carritos] as carritos #lightyellow
+        [carrito_detalles] as carritoDetalles #lightyellow
+    }
+    
+    package "Ventas" {
+        [facturas] as facturas #lightpink
+        [factura_detalles] as facturaDetalles #lightpink
+        [clientes] as clientes #lightpink
+    }
+}
+
+' Conexiones API Gateway
+gateway --> rateLimiter : Aplica
+gateway --> loadBalancer : Distribuye
+loadBalancer --> authController : Ruta
+loadBalancer --> productController : Ruta
+loadBalancer --> cartController : Ruta
+loadBalancer --> saleController : Ruta
+
+' Conexiones Servicio de Autenticación
+authController --> authService : Usa
+authService --> jwtHandler : Genera
+authService --> userRepo : Accede
+userRepo --> roles : CRUD
+userRepo --> usuarios : CRUD
+
+' Conexiones Servicio de Productos
+productController --> productService : Usa
+productService --> productFactory : Crea
+productService --> productRepo : Accede
+productRepo --> productos : CRUD
+productRepo --> categorias : CRUD
+
+' Conexiones Servicio de Carrito
+cartController --> cartService : Usa
+cartService --> cartFactory : Crea
+cartService --> cartRepo : Accede
+cartService --> eventPublisher : Notifica
+cartRepo --> carritos : CRUD
+cartRepo --> carritoDetalles : CRUD
+
+' Conexiones Servicio de Ventas
+saleController --> saleService : Usa
+saleService --> saleFactory : Crea
+saleService --> saleRepo : Accede
+saleService --> eventPublisher : Notifica
+saleRepo --> facturas : CRUD
+saleRepo --> facturaDetalles : CRUD
+saleRepo --> clientes : CRUD
+
+' Conexiones Event Bus
+eventPublisher --> messageQueue : Publica
+messageQueue --> eventSubscriber : Consume
+eventSubscriber --> saleService : Notifica
+eventSubscriber --> cartService : Notifica
+
+note right of gateway
+  Patrón Singleton
+  - Instancia única
+  - Punto de entrada centralizado
+end note
+
+note right of productFactory
+  Patrón Factory Method
+  - Crea productos
+  - Maneja variantes
+end note
+
+note right of cartFactory
+  Patrón Abstract Factory
+  - Crea carritos
+  - Crea detalles
+end note
+
+note right of eventPublisher
+  Patrón Observer
+  - Publica eventos
+  - Notifica cambios
+end note
+
+@enduml 
