@@ -1,0 +1,39 @@
+@startuml
+left to right direction
+actor Usuario
+
+rectangle "Gestor de Tareas" {
+    (Registrar categorías)
+    (Registrar actividades)
+    (Registrar clientes)
+    (Listar tareas por usuario y estado)
+}
+
+Usuario --> (Registrar categorías)
+Usuario --> (Registrar actividades)
+Usuario --> (Registrar clientes)
+Usuario --> (Listar tareas por usuario y estado)
+
+' Detalles de los casos de uso
+note right of (Registrar clientes)
+    - Capturar tipo documento, nombre, apellidos, edad, correo electrónico
+    - No se permiten registros duplicados
+    - Asignar usuario y contraseña
+end note
+
+note right of (Registrar categorías)
+    - Capturar código, nombre, descripción, estado
+    - No se permiten registros duplicados
+    - Una categoría puede tener muchas tareas
+end note
+
+note right of (Registrar actividades)
+    - Capturar código, nombre, descripción, estado, fecha inicio, fecha fin
+    - Asociar a una única categoría
+end note
+
+note right of (Listar tareas por usuario y estado)
+    - Mostrar tareas agendadas, cumplidas o canceladas
+end note
+
+@enduml

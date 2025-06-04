@@ -1,0 +1,48 @@
+@startuml gestor_tareas
+' Diagrama de clases para gestor de tareas usando POO: agregación, composición y herencia
+
+class Persona {
+  - tipoDocumento: String
+  - nombre: String
+  - apellidos: String
+  - edad: int
+  - correo: String
+}
+
+class Cliente extends Persona {
+  - usuario: String
+  - contraseña: String
+  +agregar()
+  +modificar()
+  +eliminar()
+  +consultar()
+}
+
+class Categoria {
+  - codigo: String
+  - nombre: String
+  - descripcion: String
+  - estado: String
+  +agregar()
+  +modificar()
+  +eliminar()
+  +consultar()
+}
+
+class Tarea {
+  - codigo: String
+  - nombre: String
+  - descripcion: String
+  - estado: String
+  - fechaInicio: Date
+  - fechaFin: Date
+  +agregar()
+  +modificar()
+  +eliminar()
+  +consultar()
+}
+
+Cliente o-- Tarea : "agregación"
+Categoria *-- Tarea : "composición"
+
+@enduml

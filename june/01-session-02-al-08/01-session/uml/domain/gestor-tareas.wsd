@@ -1,0 +1,39 @@
+@startuml
+' Improved domain diagram for task manager following UML best practices
+
+entity Client {
+    id: Integer
+    documentType: String
+    documentNumber: String
+    firstName: String
+    lastName: String
+    age: Integer
+    email: String
+    username: String
+    password: String
+}
+
+entity Category {
+    id: Integer
+    code: String
+    name: String
+    description: String
+    status: String
+}
+
+entity Task {
+    id: Integer
+    code: String
+    name: String
+    description: String
+    status: String
+    startDate: Date
+    endDate: Date
+}
+
+' Aggregation: A client can have multiple tasks
+Client o-- Task : assigns >
+' Composition: A category is composed of tasks
+Category *-- Task : groups >
+
+@enduml

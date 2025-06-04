@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de Tareas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="mb-4">Control de Tareas</h1>
+    <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="clientes-tab" data-bs-toggle="tab" data-bs-target="#clientes" type="button" role="tab">Clientes</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="categorias-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab">Categorías</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tareas-tab" data-bs-toggle="tab" data-bs-target="#tareas" type="button" role="tab">Tareas</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="mis-tareas-tab" data-bs-toggle="tab" data-bs-target="#mis-tareas" type="button" role="tab">Mis Tareas</button>
+      </li>
+    </ul>
+    <div class="tab-content mt-3">
+      <!-- HU01: Gestión de Clientes -->
+      <div class="tab-pane fade show active" id="clientes" role="tabpanel">
+        <h3>Registro de Cliente</h3>
+        <form id="formCliente" class="row g-3 mb-4">
+          <div class="col-md-4">
+            <label class="form-label">Tipo de Documento</label>
+            <input type="text" class="form-control" id="clienteTipoDoc" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="clienteNombre" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Apellidos</label>
+            <input type="text" class="form-control" id="clienteApellidos" required>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Edad</label>
+            <input type="number" class="form-control" id="clienteEdad" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="clienteCorreo" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="clienteUsuario" readonly>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Contraseña</label>
+            <input type="text" class="form-control" id="clienteContrasena" readonly>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="reset" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+        <h4>Lista de Clientes</h4>
+        <table class="table table-striped" id="tablaClientes">
+          <thead>
+            <tr>
+              <th>Documento</th><th>Nombre</th><th>Apellidos</th><th>Correo</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <!-- HU02: Gestión de Categorías -->
+      <div class="tab-pane fade" id="categorias" role="tabpanel">
+        <h3>Registro de Categoría</h3>
+        <form id="formCategoria" class="row g-3 mb-4">
+          <div class="col-md-3">
+            <label class="form-label">Código</label>
+            <input type="text" class="form-control" id="categoriaCodigo" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="categoriaNombre" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="categoriaDescripcion" required>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Estado</label>
+            <select class="form-select" id="categoriaEstado" required>
+              <option value="Activa">Activa</option>
+              <option value="Inactiva">Inactiva</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="reset" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+        <h4>Lista de Categorías</h4>
+        <table class="table table-striped" id="tablaCategorias">
+          <thead>
+            <tr>
+              <th>Código</th><th>Nombre</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <!-- HU03: Gestión de Tareas -->
+      <div class="tab-pane fade" id="tareas" role="tabpanel">
+        <h3>Registro de Tarea</h3>
+        <form id="formTarea" class="row g-3 mb-4">
+          <div class="col-md-2">
+            <label class="form-label">Código</label>
+            <input type="text" class="form-control" id="tareaCodigo" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="tareaNombre" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="tareaDescripcion" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Estado</label>
+            <select class="form-select" id="tareaEstado" required>
+              <option value="Agendada">Agendada</option>
+              <option value="Cumplida">Cumplida</option>
+              <option value="Cancelada">Cancelada</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Fecha Inicio</label>
+            <input type="date" class="form-control" id="tareaFechaInicio" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Fecha Fin</label>
+            <input type="date" class="form-control" id="tareaFechaFin" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Categoría</label>
+            <select class="form-select" id="tareaCategoria" required></select>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="reset" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+        <h4>Lista de Tareas</h4>
+        <table class="table table-striped" id="tablaTareas">
+          <thead>
+            <tr>
+              <th>Código</th><th>Nombre</th><th>Estado</th><th>Categoría</th><th>F. Inicio</th><th>F. Fin</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <!-- HU04: Visualización de Tareas por Usuario -->
+      <div class="tab-pane fade" id="mis-tareas" role="tabpanel">
+        <h3>Mis Tareas</h3>
+        <form class="row g-3 mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="usuarioFiltro">
+          </div>
+        </form>
+        <table class="table table-striped" id="tablaMisTareas">
+          <thead>
+            <tr>
+              <th>Código</th><th>Nombre</th><th>Estado</th><th>Categoría</th><th>F. Inicio</th><th>F. Fin</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

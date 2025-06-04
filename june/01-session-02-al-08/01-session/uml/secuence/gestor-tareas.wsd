@@ -1,0 +1,50 @@
+@startuml gestor_tareas_sequence
+' Sequence diagram for Task Manager Application
+
+actor User
+participant UI as "User Interface"
+participant Controller
+participant Service
+participant DB as "Database"
+
+== Register Client ==
+User -> UI: Enter client data
+UI -> Controller: submitClient(data)
+Controller -> Service: validateAndRegisterClient(data)
+Service -> DB: checkDuplicateClient(data)
+DB --> Service: not found
+Service -> DB: saveClient(data)
+DB --> Service: clientId
+Service --> Controller: clientRegistered
+Controller --> UI: showSuccess
+
+== Register Category ==
+User -> UI: Enter category data
+UI -> Controller: submitCategory(data)
+Controller -> Service: validateAndRegisterCategory(data)
+Service -> DB: checkDuplicateCategory(data)
+DB --> Service: not found
+Service -> DB: saveCategory(data)
+DB --> Service: categoryId
+Service --> Controller: categoryRegistered
+Controller --> UI: showSuccess
+
+== Register Task ==
+User -> UI: Enter task data
+UI -> Controller: submitTask(data)
+Controller -> Service: validateAndRegisterTask(data)
+Service -> DB: saveTask(data)
+DB --> Service: taskId
+Service --> Controller: taskRegistered
+Controller --> UI: showSuccess
+
+== List Tasks by User and Status ==
+User -> UI: Request tasks by status
+UI -> Controller: getTasksByUserAndStatus(userId, status)
+Controller -> Service: fetchTasks(userId, status)
+Service -> DB: queryTasks(userId, status)
+DB --> Service: tasksList
+Service --> Controller: tasksList
+Controller --> UI: displayTasks(tasksList)
+
+@enduml
